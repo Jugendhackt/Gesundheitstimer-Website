@@ -14,7 +14,8 @@ def index():
 @app.route("/api/datengeaendert", methods=["POST"])
 def data_change():
     weight = request.form.get("gewicht")
-    db.Measurement.create(weight=weight, id=str(uuid4()))
+    time = request.form.get("zeit")
+    db.Measurement.create(weight=weight, id=str(uuid4()), time=time)
 
     return Response(), 200
 
@@ -22,5 +23,3 @@ def data_change():
 def main():
     db.database.create_tables([db.Measurement])
     app.run(host="0.0.0.0")
-
-
