@@ -1,7 +1,7 @@
 from uuid import uuid4
 import socket
 import logging
-from time import time
+from time import time, ctime
 
 from flask import Flask, render_template, request, Response
 
@@ -46,11 +46,49 @@ def calculate_remaining_drunk(goal: int):
 def data_change():
     log.debug(f"Ändere Daten von {request.remote_addr}")
 
-    weight = request.form.get("gewicht")
-    # time = request.form.get("zeit")
+    weight = float(request.form.get("gewicht", 0))
+
+    if abs(weight) < 1:
+        return Response(), 200
+    if weight < 0:
+        return Response(), 200
+
     db.Measurement.create(weight=weight, id=str(uuid4()), time=round(time(), 0))
 
     return Response(), 200
+
+
+@app.template_filter('ctime')
+def timectime(s):
+    return ctime(s)
+
+
+@app.route("/api/alarm", methods=["POST"])
+def alert():
+    log.debug("Alarm gesetzt")
+
+    alarm_setting = db.Setting.get(db.Setting.key == "alarm")
+    alarm_setting.value = 1
+    alarm_setting.save()
+
+    return Response(), 200
+
+
+@app.route("/api/menge", methods=["POST"])
+def menge():
+    goal_setting = db.Setting.get(db.Setting.key == "goal")
+
+    log.debug(f"Menge auf {request.form.get('menge_ml', 0)} gesetz")
+
+    goal_setting.value = str(request.form.get("menge_ml", 0))
+    goal_setting.save()
+
+    return Response(), 200
+
+
+@app.route("/settings.html", methods=["GET"])
+def settings():
+    return render_template("settings.html")
 
 
 def get_ip() -> str:
@@ -60,7 +98,15 @@ def get_ip() -> str:
 
 def main():
     log.info(f"Starte Server auf {get_ip()}:5000")
-    db.database.create_tables([db.Measurement])
+
+    db.database.create_tables([db.Measurement, db.Setting])
+    if not db.Setting.select().where(db.Setting.key == "goal").exists():
+        db.Setting.create(key="goal", value=1000)
+    if not db.Setting.select().where(db.Setting.key == "bottle_mass").exists():
+        db.Setting.create(key="bottle_mass", value=0)
+    if not db.Setting.select().where(db.Setting.key == "alarm").exists():
+        db.Setting.create(key="alarm", value=0)
+
     app.run(host="0.0.0.0", port=5000)
 
 

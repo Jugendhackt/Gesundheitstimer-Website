@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta http-equiv="refresh" content="5" >
+    <meta http-equiv="refresh" content="10" >
     <link rel="stylesheet" href="../static/styles.css" />
     <title>Der Gesundheitstimer</title>
     <script
@@ -43,7 +43,7 @@
       {% for measurement in measurements %}
       <tr>
         <td>{{ measurement["weight"] }}</td>
-        <td>{{ measurement["time"] }}</td>
+        <td>{{ measurement["time"] | ctime }}</td>
       </tr>
       {% endfor %}
     </table>
