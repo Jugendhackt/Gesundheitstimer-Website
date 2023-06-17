@@ -63,6 +63,11 @@ def timectime(s):
     return ctime(s)
 
 
+@app.route("/settings", methods=["GET"])
+def settings():
+    return render_template("settings.html")
+
+
 def get_ip() -> str:
     hostname = socket.gethostname()
     return socket.gethostbyname(hostname)
