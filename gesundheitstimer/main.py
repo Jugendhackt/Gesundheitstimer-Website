@@ -12,7 +12,7 @@ def index():
     return render_template("index.html", measurements=measurements)
 
 
-@app.route("/api/datengeaendert", methods=["POST"])
+@app.route("/api/datengeandert", methods=["POST"])
 def data_change():
     weight = request.form.get("gewicht")
     time = request.form.get("zeit")
