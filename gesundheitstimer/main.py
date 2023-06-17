@@ -1,12 +1,14 @@
-from flask import Flask
+from uuid import uuid4
+
+from flask import Flask, render_template, request, Response
 import gesundheitstimer.database as db
 
 app = Flask(__name__)
 
 
-@app.route("/api/new_data")
-def test():
-    return "hi"
+@app.route("/", methods=["GET"])
+def index():
+    return render_template("index.html")
 
 
 def main():
