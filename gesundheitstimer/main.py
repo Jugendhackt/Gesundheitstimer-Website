@@ -63,7 +63,18 @@ def timectime(s):
     return ctime(s)
 
 
-@app.route("/settings", methods=["GET"])
+@app.route("/api/menge", methods=["POST"])
+def menge():
+    goal_setting = db.Setting.get(db.Setting.key == "goal")
+
+    log.debug(f"Menge auf {request.form.get('menge_ml', 0)} gesetz")
+
+    goal_setting.value = str(request.form.get("menge_ml", 0))
+    goal_setting.save()
+
+    return Response(), 200
+
+
 @app.route("/settings.html", methods=["GET"])
 def settings():
     return render_template("settings.html")
