@@ -63,6 +63,17 @@ def timectime(s):
     return ctime(s)
 
 
+@app.route("/api/alarm", methods=["POST"])
+def alert():
+    log.debug("Alarm gesetzt")
+
+    alarm_setting = db.Setting.get(db.Setting.key == "alarm")
+    alarm_setting.value = 1
+    alarm_setting.save()
+
+    return Response(), 200
+
+
 @app.route("/api/menge", methods=["POST"])
 def menge():
     goal_setting = db.Setting.get(db.Setting.key == "goal")
