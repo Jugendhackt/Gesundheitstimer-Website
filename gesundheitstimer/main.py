@@ -8,7 +8,8 @@ app = Flask(__name__)
 
 @app.route("/", methods=["GET"])
 def index():
-    return render_template("index.html")
+    measurements = list(db.Measurement.select().limit(10).dicts())
+    return render_template("index.html", measurements=measurements)
 
 
 @app.route("/api/datengeaendert", methods=["POST"])

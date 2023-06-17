@@ -14,24 +14,12 @@
         <th>Füllstand</th>
 
     </tr>
+    {% for measurement in measurements %}
     <tr>
-        <td>10:00</td>
-        <td>1,0l</td>
-
+        <td>{{ measurement["weight"] }}</td>
+        <td>{{ measurement["time"] }}</td>
     </tr>
-    <tr>
-        <td>10:30</td>
-        <td>0,8l</td>
-
-    </tr>
-    <tr>
-        <td>11:00</td>
-        <td>0,5l</td>
-    </tr>
-    <tr>
-        <td>11:30</td>
-        <td>0,2l</td>
-    </tr>
+    {% endfor %}
 </table>
 </body>
 </html>
