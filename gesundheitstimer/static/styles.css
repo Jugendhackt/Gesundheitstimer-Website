@@ -17,3 +17,6 @@ table, th, td {
   right: 10%;
   width: 50%;
 }
+.obenrechts rect{
+ fill-opacity: 0;
+}
