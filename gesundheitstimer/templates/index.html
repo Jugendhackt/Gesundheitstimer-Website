@@ -2,8 +2,9 @@
 
 <!-- Comment -->
 {% block content %}
+
 <head>
-  <meta http-equiv="refresh" content="10" />
+  <meta http-equiv="refresh" content="1" />
   <link rel="stylesheet" href="../static/styles.css" />
   <title>Der Gesundheitstimer</title>
 </head>
@@ -40,18 +41,18 @@
     var data = google.visualization.arrayToDataTable([
       ["Task", "Hours per Day"],
       ["Bereits getrunken", {{ drunk }}],
-      ["bis zum Trinkziel", {{ remaining }}],
+  ["bis zum Trinkziel", {{ remaining }}],
     ]);
 
-    var options = {
-      title: "",
-      pieHole: 0.4,
-    };
+  var options = {
+    title: "",
+    pieHole: 0.4,
+  };
 
-    var chart = new google.visualization.PieChart(
-      document.getElementById("donutchart")
-    );
-    chart.draw(data, options);
+  var chart = new google.visualization.PieChart(
+    document.getElementById("donutchart")
+  );
+  chart.draw(data, options);
   }
 </script>
 
