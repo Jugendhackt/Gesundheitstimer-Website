@@ -44,9 +44,8 @@ def calculate_remaining_drunk(goal: int):
 
 @app.route("/api/datengeandert", methods=["POST"])
 def data_change():
-    log.debug(f"Ändere Daten von {request.remote_addr}")
-
     weight = float(request.form.get("gewicht", 0))
+    log.debug(f"Gewicht {weight} von client {request.remote_addr}")
 
     if abs(weight) < 1:
         return Response(), 200
