@@ -64,6 +64,7 @@ def timectime(s):
 
 
 @app.route("/settings", methods=["GET"])
+@app.route("/settings.html", methods=["GET"])
 def settings():
     return render_template("settings.html")
 
