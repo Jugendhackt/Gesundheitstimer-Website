@@ -76,7 +76,15 @@ def get_ip() -> str:
 
 def main():
     log.info(f"Starte Server auf {get_ip()}:5000")
-    db.database.create_tables([db.Measurement])
+
+    db.database.create_tables([db.Measurement, db.Setting])
+    if not db.Setting.select().where(db.Setting.key == "goal").exists():
+        db.Setting.create(key="goal", value=1000)
+    if not db.Setting.select().where(db.Setting.key == "bottle_mass").exists():
+        db.Setting.create(key="bottle_mass", value=0)
+    if not db.Setting.select().where(db.Setting.key == "alarm").exists():
+        db.Setting.create(key="alarm", value=0)
+
     app.run(host="0.0.0.0", port=5000)
 
 

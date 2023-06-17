@@ -20,3 +20,8 @@ class Measurement(BaseModel):
     id = TextField(primary_key=True)
     time = IntegerField()
     weight = FloatField()
+
+
+class Setting(BaseModel):
+    key = TextField(primary_key=True)
+    value = TextField()
