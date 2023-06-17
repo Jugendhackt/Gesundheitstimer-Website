@@ -46,8 +46,13 @@ def calculate_remaining_drunk(goal: int):
 def data_change():
     log.debug(f"Ändere Daten von {request.remote_addr}")
 
-    weight = request.form.get("gewicht")
-    # time = request.form.get("zeit")
+    weight = float(request.form.get("gewicht", 0))
+
+    if abs(weight) < 1:
+        return Response(), 200
+    if weight < 0:
+        return Response(), 200
+
     db.Measurement.create(weight=weight, id=str(uuid4()), time=round(time(), 0))
 
     return Response(), 200
