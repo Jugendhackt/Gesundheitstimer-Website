@@ -3,7 +3,7 @@ import socket
 import logging
 from time import time, ctime
 
-from flask import Flask, render_template, request, Response
+from flask import Flask, render_template, request, Response, redirect
 
 import gesundheitstimer.database as db
 from gesundheitstimer.log import log
@@ -87,7 +87,15 @@ def menge():
 
 @app.route("/settings.html", methods=["GET"])
 def settings():
+    # TODO: show current value
     return render_template("settings.html")
+
+
+@app.route("/set_weight", methods=["POST"])
+def set_weight():
+    weight = request.form.get("weight", 0)
+    log.info(weight)
+    return redirect("/settings.html")
 
 
 def get_ip() -> str:
