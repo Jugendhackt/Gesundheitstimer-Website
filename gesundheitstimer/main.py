@@ -1,6 +1,7 @@
 from uuid import uuid4
 import socket
 import logging
+from time import time
 
 from flask import Flask, render_template, request, Response
 
@@ -14,8 +15,31 @@ logging.getLogger("werkzeug").disabled = True
 @app.route("/", methods=["GET"])
 def index():
     log.debug("Zeige webpage")
-    measurements = list(db.Measurement.select().limit(10).dicts())
-    return render_template("index.html", measurements=measurements)
+
+    measurements = list(db.Measurement.select().order_by(db.Measurement.time.desc()).limit(30).dicts())
+
+    remaining, drunk = calculate_remaining_drunk(1000)
+
+    return render_template("index.html", measurements=measurements, drunk=drunk, remaining=remaining)
+
+
+def calculate_remaining_drunk(goal: int):
+    drunk = 0
+    prev = -100
+
+    for measurement in db.Measurement.select().order_by(db.Measurement.time.desc()):
+        # Skip only small changes
+        if abs(measurement.weight - prev) < 1:
+            continue
+
+        if measurement.weight < prev:
+            drunk += (prev - measurement.weight)
+
+        prev = measurement.weight
+
+    remaining = max(goal - drunk, 0)
+
+    return remaining, drunk
 
 
 @app.route("/api/datengeandert", methods=["POST"])
@@ -23,8 +47,8 @@ def data_change():
     log.debug(f"Ändere Daten von {request.remote_addr}")
 
     weight = request.form.get("gewicht")
-    time = request.form.get("zeit")
-    db.Measurement.create(weight=weight, id=str(uuid4()), time=time)
+    # time = request.form.get("zeit")
+    db.Measurement.create(weight=weight, id=str(uuid4()), time=round(time(), 0))
 
     return Response(), 200
 

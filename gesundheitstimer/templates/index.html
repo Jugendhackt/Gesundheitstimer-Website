@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta http-equiv="refresh" content="5" >
     <link rel="stylesheet" href="../static/styles.css" />
     <title>Der Gesundheitstimer</title>
     <script
@@ -13,8 +14,8 @@
       function drawChart() {
         var data = google.visualization.arrayToDataTable([
           ["Task", "Hours per Day"],
-          ["Bereits getrunken", 90],
-          ["Trinkziel", 10],
+          ["Bereits getrunken", {{ drunk }}],
+          ["bis zum Trinkziel", {{ remaining }}],
         ]);
 
         var options = {
