@@ -1,59 +1,58 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta http-equiv="refresh" content="10" >
-    <link rel="stylesheet" href="../static/styles.css" />
-    <title>Der Gesundheitstimer</title>
-    <script
-      type="text/javascript"
-      src="https://www.gstatic.com/charts/loader.js"
-    ></script>
-    <script type="text/javascript">
-      google.charts.load("current", { packages: ["corechart"] });
-      google.charts.setOnLoadCallback(drawChart);
-      function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-          ["Task", "Hours per Day"],
-          ["Bereits getrunken", {{ drunk }}],
-          ["bis zum Trinkziel", {{ remaining }}],
-        ]);
+{% extends 'base.html' %}
 
-        var options = {
-          title: "",
-          pieHole: 0.4,
-        };
+<!-- Comment -->
+{% block content %}
+<head>
+  <meta http-equiv="refresh" content="10" />
+  <link rel="stylesheet" href="../static/styles.css" />
+  <title>Der Gesundheitstimer</title>
+</head>
 
-        var chart = new google.visualization.PieChart(
-          document.getElementById("donutchart")
-        );
-        chart.draw(data, options);
-      }
-    </script>
-  </head>
+<table style="width: 30%">
+  <tr>
+    <th>Füllstand (in ml)</th>
+    <th>Zeit</th>
+  </tr>
+  {% for measurement in measurements %}
+  <tr>
+    <td>{{ measurement["weight"] }}</td>
+    <td>{{ measurement["time"] | ctime }}</td>
+  </tr>
+  {% endfor %}
+</table>
 
-  <body>
-   
-    <h1>Der Gesundheitstimer</h1>
-    <p></p>
-    <table style="width: 30%">
-      <tr>
-        <th>Füllstand (in ml)</th>
-        <th>Zeit</th>
-      </tr>
-      {% for measurement in measurements %}
-      <tr>
-        <td>{{ measurement["weight"] }}</td>
-        <td>{{ measurement["time"] | ctime }}</td>
-      </tr>
-      {% endfor %}
-    </table>
+<div class="obenrechts">
+  <div id="donutchart" style="width: 800px; height: 450px"></div>
+</div>
+<img
+  src="https://avatars.githubusercontent.com/u/5402446?s=200&v=4"
+  alt="Alpaka"
+/>
 
-    <div class="obenrechts">
-      <div id="donutchart" style="width: 800px; height: 450px"></div>
-    </div>
-    <img src="https://avatars.githubusercontent.com/u/5402446?s=200&v=4" alt="Alpaka">
-    
-    <a href="settings.html">Einstellungen</a>.
-  </body>
+<script
+  type="text/javascript"
+  src="https://www.gstatic.com/charts/loader.js"
+></script>
+<script type="text/javascript">
+  google.charts.load("current", { packages: ["corechart"] });
+  google.charts.setOnLoadCallback(drawChart);
+  function drawChart() {
+    var data = google.visualization.arrayToDataTable([
+      ["Task", "Hours per Day"],
+      ["Bereits getrunken", {{ drunk }}],
+      ["bis zum Trinkziel", {{ remaining }}],
+    ]);
 
-</html>
+    var options = {
+      title: "",
+      pieHole: 0.4,
+    };
+
+    var chart = new google.visualization.PieChart(
+      document.getElementById("donutchart")
+    );
+    chart.draw(data, options);
+  }
+</script>
+
+{% endblock %}
