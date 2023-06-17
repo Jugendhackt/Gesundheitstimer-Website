@@ -11,6 +11,14 @@ def index():
     return render_template("index.html")
 
 
+@app.route("/api/datengeaendert", methods=["POST"])
+def data_change():
+    weight = request.form.get("gewicht")
+    db.Measurement.create(weight=weight, id=str(uuid4()))
+
+    return Response(), 200
+
+
 def main():
     db.database.create_tables([db.Measurement])
     app.run(host="0.0.0.0")
