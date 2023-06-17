@@ -5,4 +5,15 @@ table, th, td {
   th, td {
     background-color: #96D4D4;
   }
- 
+
+.center {display: flex;
+  justify-content:center;
+  align-items: center;
+  
+}
+.obenrechts{
+  position: fixed;
+  bottom: 25%;
+  right: 10%;
+  width: 50%;
+}

@@ -1,25 +1,53 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <link rel="stylesheet" href="../static/styles.css">
+  <head>
+    <link rel="stylesheet" href="../static/styles.css" />
     <title>Der Gesundheitstimer</title>
-</head>
-<body>
+    <script
+      type="text/javascript"
+      src="https://www.gstatic.com/charts/loader.js"
+    ></script>
+    <script type="text/javascript">
+      google.charts.load("current", { packages: ["corechart"] });
+      google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ["Task", "Hours per Day"],
+          ["Bereits getrunken", 90],
+          ["Trinkziel", 10],
+        ]);
 
-<h1>Der Gesundheitstimer</h1>
-<p></p>
-<table style="width:30%">
-    <tr>
+        var options = {
+          title: "",
+          pieHole: 0.4,
+        };
+
+        var chart = new google.visualization.PieChart(
+          document.getElementById("donutchart")
+        );
+        chart.draw(data, options);
+      }
+    </script>
+  </head>
+
+  <body>
+    <h1>Der Gesundheitstimer</h1>
+    <p></p>
+    <table style="width: 30%">
+      <tr>
         <th>Zeit</th>
         <th>Füllstand</th>
-
-    </tr>
-    {% for measurement in measurements %}
-    <tr>
+      </tr>
+      {% for measurement in measurements %}
+      <tr>
         <td>{{ measurement["weight"] }}</td>
         <td>{{ measurement["time"] }}</td>
-    </tr>
-    {% endfor %}
-</table>
-</body>
+      </tr>
+      {% endfor %}
+    </table>
+
+    <div class="obenrechts">
+      <div id="donutchart" style="width: 800px; height: 450px"></div>
+    </div>
+  </body>
 </html>
