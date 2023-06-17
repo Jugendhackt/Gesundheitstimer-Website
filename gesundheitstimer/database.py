@@ -1,4 +1,4 @@
-from peewee import SqliteDatabase, Model, IntegerField, TextField
+from peewee import SqliteDatabase, Model, IntegerField, TextField, FloatField
 
 database = SqliteDatabase('../database.db')
 
@@ -10,5 +10,5 @@ class BaseModel(Model):
 
 class Measurement(BaseModel):
     id = TextField(primary_key=True)
-    weight = IntegerField()
     time = IntegerField()
+    weight = FloatField()
