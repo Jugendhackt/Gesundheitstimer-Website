@@ -1,7 +1,7 @@
 from uuid import uuid4
 import socket
 import logging
-from time import time
+from time import time, ctime
 
 from flask import Flask, render_template, request, Response
 
@@ -56,6 +56,11 @@ def data_change():
     db.Measurement.create(weight=weight, id=str(uuid4()), time=round(time(), 0))
 
     return Response(), 200
+
+
+@app.template_filter('ctime')
+def timectime(s):
+    return ctime(s)
 
 
 def get_ip() -> str:

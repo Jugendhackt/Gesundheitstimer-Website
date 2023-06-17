@@ -42,7 +42,7 @@
       {% for measurement in measurements %}
       <tr>
         <td>{{ measurement["weight"] }}</td>
-        <td>{{ measurement["time"] }}</td>
+        <td>{{ measurement["time"] | ctime }}</td>
       </tr>
       {% endfor %}
     </table>
@@ -51,7 +51,5 @@
       <div id="donutchart" style="width: 800px; height: 450px"></div>
     </div>
     <img src="https://avatars.githubusercontent.com/u/5402446?s=200&v=4" alt="Alpaka">
-    
-    
   </body>
 </html>
