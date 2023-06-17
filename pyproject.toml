@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "gesundheitstimer-website"
+version = "0.1.0"
+description = ""
+authors = ["2mal3 <56305732+2mal3@users.noreply.github.com>"]
+readme = "README.md"
+packages = [{include = "gesundheitstimer_website"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+flask = "^2.3.2"
+peewee = "^3.16.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
