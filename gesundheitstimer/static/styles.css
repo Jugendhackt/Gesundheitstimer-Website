@@ -27,3 +27,17 @@ table, th, td {
   right: 0%;
   width: 4%;
 }
+
+.abcdefg{
+  position: fixed;
+  bottom: 13%;
+  right: 15%;
+  width: 20%;
+}
+
+.xyz{
+  position: fixed;
+  bottom: 20%;
+  right: 15%;
+  width: 20%;
+}
