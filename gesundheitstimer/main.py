@@ -1,7 +1,7 @@
 from uuid import uuid4
 import socket
 import logging
-from time import time, ctime
+from time import time, ctime, sleep
 
 from flask import Flask, render_template, request, Response, redirect
 
