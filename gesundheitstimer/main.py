@@ -18,11 +18,17 @@ def index():
 
     measurements = list(db.Measurement.select().order_by(db.Measurement.time.desc()).limit(30).dicts())
 
+    # Target hardcoded for now
     remaining, drunk = calculate_remaining_drunk(1000)
+
+    bottle_mass_setting = db.Setting.get(db.Setting.key == "bottle_mass")
+    weight = float(bottle_mass_setting.value)
+
     if len(measurements) > 0:
         current = measurements[0]["weight"]
         if current == 0:
             current = measurements[1]["weight"]
+        current = max(0, current - weight)
     else:
         current = None
 
@@ -121,9 +127,9 @@ def settings():
 @app.route("/set_weight", methods=["POST"])
 def set_weight():
     weight = request.form.get("weight", 0)
-    # bottle_mass_setting = db.Setting.get(db.Setting.key == "bottle_mass")
-    # bottle_mass_setting.value = weight
-    # bottle_mass_setting.save()
+    bottle_mass_setting = db.Setting.get(db.Setting.key == "bottle_mass")
+    bottle_mass_setting.value = weight
+    bottle_mass_setting.save()
 
     log.info(f"Setze Flaschen Inhalt auf {weight}")
     return redirect("/settings.html")
