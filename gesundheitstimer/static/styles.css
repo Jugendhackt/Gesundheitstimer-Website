@@ -20,3 +20,10 @@ table, th, td {
 .obenrechts rect{
  fill-opacity: 0;
 }
+
+.deralpaka{
+  position: fixed;
+  bottom: 70%;
+  right: 0%;
+  width: 15%;
+}
