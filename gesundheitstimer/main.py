@@ -94,7 +94,7 @@ def settings():
 @app.route("/set_weight", methods=["POST"])
 def set_weight():
     weight = request.form.get("weight", 0)
-    log.info(weight)
+    log.info(f"Setze Flaschen Inhalt auf {weight}")
     return redirect("/settings.html")
 
 
@@ -115,7 +115,3 @@ def main():
         db.Setting.create(key="alarm", value=0)
 
     app.run(host="0.0.0.0", port=5000)
-
-
-if __name__ == "__main__":
-    main()
