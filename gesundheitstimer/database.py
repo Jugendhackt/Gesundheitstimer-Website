@@ -18,7 +18,7 @@ class BaseModel(Model):
 
 class Measurement(BaseModel):
     id = TextField(primary_key=True)
-    time = IntegerField()
+    time = FloatField()
     weight = FloatField()
 
 

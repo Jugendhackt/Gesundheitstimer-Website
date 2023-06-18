@@ -52,7 +52,7 @@ def data_change():
     if weight < 0:
         return Response(), 200
 
-    db.Measurement.create(weight=weight, id=str(uuid4()), time=round(time(), 0))
+    db.Measurement.create(weight=weight, id=str(uuid4()), time=time())
 
     return Response(), 200
 
