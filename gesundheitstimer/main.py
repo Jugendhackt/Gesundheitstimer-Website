@@ -25,29 +25,51 @@ def index():
 
 def calculate_remaining_drunk(goal: int):
     drunk = 0
-    prev = -100
+    max_values = []
+    prev_1_value = -100
+    prev_2_value = -100
+    last_time = 0
 
-    for measurement in db.Measurement.select().order_by(db.Measurement.time.desc()):
-        # Skip only small changes
-        if abs(measurement.weight - prev) < 1:
-            continue
+    print("")
+    measurements = db.Measurement.select().order_by(db.Measurement.time)
+    for measurement in measurements:
+        if prev_1_value > prev_2_value and prev_1_value > measurement.weight:
+            max_values.append(prev_1_value)
+            print(f"Maximum bei {prev_1_value}")
 
-        if measurement.weight < prev:
-            drunk += (prev - measurement.weight)
+        prev_2_value = prev_1_value
+        prev_1_value = measurement.weight
+        last_time = measurement.time
 
-        prev = measurement.weight
+    now = time()
+    if (now - last_time) > 1 and last_time != 0:
+        max_values.append(prev_1_value)
+        print(f"Maximum bei {prev_1_value}")
+
+    for i in range(1, len(max_values)):
+        if (max_values[i] < max_values[i-1]) and max_values[i] > 5:
+            drunk += max_values[i-1] - max_values[i]
 
     remaining = max(goal - drunk, 0)
 
     return remaining, drunk
 
 
+last_value = 0
+
+
 @app.route("/api/datengeandert", methods=["POST"])
 def data_change():
-    # return Response(), 200
-    weight = float(request.form.get("gewicht", 0))
-    log.debug(f"Gewicht {weight} von client {request.remote_addr}")
+    global last_value
 
+    weight = float(request.form.get("gewicht", 0))
+
+    # Skip same values
+    if abs(last_value - weight) < 5:
+        return Response(), 200
+    last_value = weight
+
+    # Special 0 values
     if abs(weight) < 1:
         weight = 0
     if weight < 0:
@@ -55,6 +77,7 @@ def data_change():
 
     db.Measurement.create(weight=weight, id=str(uuid4()), time=time())
 
+    log.debug(f"Gewicht {weight} von client {request.remote_addr}")
     return Response(), 200
 
 

@@ -2,7 +2,7 @@ import logging
 
 # Logger
 log = logging.getLogger(__name__)
-log.setLevel(logging.DEBUG)
+log.setLevel(logging.INFO)
 
 formatter = logging.Formatter(
     "[%(asctime)s] [%(module)s/%(levelname)s]: %(message)s",
