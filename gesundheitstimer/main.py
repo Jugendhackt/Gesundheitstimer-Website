@@ -131,6 +131,8 @@ def main():
     log.info(f"Starte Server auf {get_ip()}:5000")
 
     db.database.create_tables([db.Measurement, db.Setting])
+    sleep(1)
+
     if not db.Setting.select().where(db.Setting.key == "goal").exists():
         db.Setting.create(key="goal", value=1000)
     if not db.Setting.select().where(db.Setting.key == "bottle_mass").exists():
