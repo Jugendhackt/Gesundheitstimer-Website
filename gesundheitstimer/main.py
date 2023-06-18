@@ -44,13 +44,14 @@ def calculate_remaining_drunk(goal: int):
 
 @app.route("/api/datengeandert", methods=["POST"])
 def data_change():
+    # return Response(), 200
     weight = float(request.form.get("gewicht", 0))
     log.debug(f"Gewicht {weight} von client {request.remote_addr}")
 
     if abs(weight) < 1:
-        return Response(), 200
+        weight = 0
     if weight < 0:
-        return Response(), 200
+        weight = 0
 
     db.Measurement.create(weight=weight, id=str(uuid4()), time=time())
 
