@@ -30,12 +30,10 @@ def calculate_remaining_drunk(goal: int):
     prev_2_value = -100
     last_time = 0
 
-    print("")
     measurements = db.Measurement.select().order_by(db.Measurement.time)
     for measurement in measurements:
         if prev_1_value > prev_2_value and prev_1_value > measurement.weight:
             max_values.append(prev_1_value)
-            print(f"Maximum bei {prev_1_value}")
 
         prev_2_value = prev_1_value
         prev_1_value = measurement.weight
@@ -44,7 +42,6 @@ def calculate_remaining_drunk(goal: int):
     now = time()
     if (now - last_time) > 1 and last_time != 0:
         max_values.append(prev_1_value)
-        print(f"Maximum bei {prev_1_value}")
 
     for i in range(1, len(max_values)):
         if (max_values[i] < max_values[i-1]) and max_values[i] > 5:
