@@ -19,8 +19,14 @@ def index():
     measurements = list(db.Measurement.select().order_by(db.Measurement.time.desc()).limit(30).dicts())
 
     remaining, drunk = calculate_remaining_drunk(1000)
+    if len(measurements) > 0:
+        current = measurements[0]["weight"]
+        if current == 0:
+            current = measurements[1]["weight"]
+    else:
+        current = None
 
-    return render_template("index.html", measurements=measurements, drunk=drunk, remaining=remaining)
+    return render_template("index.html", measurements=measurements, drunk=drunk, remaining=remaining, current=current)
 
 
 def calculate_remaining_drunk(goal: int):
@@ -115,6 +121,10 @@ def settings():
 @app.route("/set_weight", methods=["POST"])
 def set_weight():
     weight = request.form.get("weight", 0)
+    # bottle_mass_setting = db.Setting.get(db.Setting.key == "bottle_mass")
+    # bottle_mass_setting.value = weight
+    # bottle_mass_setting.save()
+
     log.info(f"Setze Flaschen Inhalt auf {weight}")
     return redirect("/settings.html")
 
